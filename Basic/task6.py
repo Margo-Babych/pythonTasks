@@ -10,3 +10,9 @@ if answer == 8:
     print("Yes, that\'s right!!!" + "\U0001F604")
 else:
     print("Oh, no. " + "\N{flushed face}")
+
+answer2 = int(input(" 3**3 = ?       Your answer is: "))
+if answer2 == 27:
+    print("Yes, that\'s right!!!" + "\U0001F604")
+else:
+    print("Oh, no. " + "\N{flushed face}")
