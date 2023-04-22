@@ -14,7 +14,7 @@ An option to exit the program"""
 
 import json
 
-file_path = "D:\Users\Асус\PycharmProjects\pythonPTasks\Functions\phonebook.json"
+file_path = "phonebook_filename.py"
 
 
 def read_dataset(file_path):
@@ -47,13 +47,68 @@ command_key = {
 field_names = ["first_name", "last_name", "phone", "city", "country"]
 
 
+
 def input_contact():
     our_data = new_data.copy()
     for key, name in zip(our_data.keys(), field_names):
-        our_data[key] = input(f'Enter {name}: ')
+        our_data[key] = input(f'Enter {name}: ' )
     return our_data
 
+def read_commands():
+    print("You can choice: ",
+          "n - new data",
+          "sf - find first_name",
+          "sl - find last_name",
+          "sfl - find full_name",
+          "sp - find phone",
+          "sct - find city",
+          "sc - find country",
+          "up - update data",
+          "del - delete data",
+          "exit - exit", sep='\n')
 
+    command = input("Enter command: ")
+    if command == 'n':
+        save_data(input_contact())
+        print("Data saved")
+        return True
+    elif command in ['sf', 'sl', 'sfl', 'sp', 'sct', 'sc']:
+        find_type = command
+        find_value = input("Enter value: ")
+        if find_type in ['sf', 'sl', 'sfl', 'sp', 'sct', 'sc']:
+            contact = search_by(find_type, find_value)
+            if contact != None and len(contact) == 5:
+                print("Found: ")
+                print_result(contact)
+                return True
+            elif len(contact) > 5:
+                print("Found some numbers: ")
+                print(contact)
+                return True
+            else:
+                print("Not found")
+                return True
+        elif command == 'up':
+            update_contact()
+
+
+
+def search_by(command, value):
+    with open('data.json', 'r', encoding='utf-8') as data_file:
+        database = json.load(data_file)
+    if command != 'sfl':
+        for i in range(len(database)):
+            if dict(database[i])[command_key[command]] == value:
+                return dict(database[i])
+
+    else:
+        for i in range(len(database)):
+            full_name = dict(database[i])['first_name'] + ' ' + dict(database[i]['last_name'])
+            if full_name == value:
+                return dict(database[i])
+
+def update_contact():
+    print("Found contact for update:  ")
 # Helper function to search phonebook by key and value
 def search_phonebook(key, value, phonebook=None):
     results = []
@@ -64,8 +119,8 @@ def search_phonebook(key, value, phonebook=None):
 
 
 # Helper function to save phonebook data to file
-def save_phonebook():
-    with open(phonebook_filename, "w") as f:
+def save_phonebook(phonebook="phonebook_filename.py"):
+    with open("phonebook_filename.py", "w") as f:
         json.dump(phonebook, f)
 
 
@@ -129,7 +184,7 @@ while True:
         # Search by full name
         full_name = input("Enter full name: ")
         results = []
-        for record in phonebook:
+        for record in "phonebook_filename.py":
             if f"{record['first_name']} {record['last_name']}" == full_name:
                 results.append(record)
         if len(results) == 0:
